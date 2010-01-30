@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Find and replace text across nodes</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="description" content="Find and replace text across nodes" />
+	<meta http-equiv="keywords" content="jquery, find, replace, node, text, textnode, span" />
+	<link rel="stylesheet" type="text/css" media="screen" href="http://badsyntax.co.uk/css/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="http://badsyntax.co.uk/css/main.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="http://badsyntax.co.uk/css/prettify.css" />
+	<style type="text/css" media="screen">
+		#text {
+			display: inline-block;
+			border: 1px solid #aaa;
+			padding: .4em;
+			margin-bottom: 1em;
+			background: url(http://badsyntax.co.uk/img/form_bg.gif) repeat-x 0 0;
+			border: 1px solid #888;
+			border-right: 1px solid #ccc;
+			border-bottom: 1px solid #ccc;
+			-moz-border-radius: 4px;
+			-webkit-border-radius: 4px;
+			padding: 0.8em 0.9em 0 0.9em;
+			margin-bottom: 10px;
+		}
+		#text .highlight {
+			background: yellow;	
+			font-style: normal;
+		}
+		#benchmark-results {
+			clear: both;
+			font-size: x-small;
+		}
+		input#replace-word-val, input#find-word-val {
+			font-size: .9em;
+			padding: .4em .4em;
+			width: 10em;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header" class="ui-tabs ui-widget ui-widget-content">
+			<h1 id="banner">
+				Find and replace text across nodes
+			</h1>
+			<ul id="nav" class="ui-tabs ui-widget-header ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-corner-all">
+				<li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active">
+					<a href="#">Overview</a>
+				</li>
+			</ul>
+		</div>
+
+		<div id="body" class="clearfix ui-widget-content ui-tabs ui-widget ui-corner-all">
+			<div class="col-r">
+
+				<p><strong>Overview:</strong></p>
+				<p>
+					This plugin can find and replace words that span across text and element nodes. 
+				</p>
+				<div>
+					eg: (looking for the string 'word')
+					<pre class="prettyprint lang-html">this is a w&lt;strong&gt;or&lt;/strong&gt;d</pre>
+					a more complex example:
+					<pre class="prettyprint lang-html">this is a w&lt;strong style=&quot;font-size: x-small&quot;&gt;o&lt;big&gt;r&lt;/big&gt;&lt;/strong&gt;d</pre>
+				</div>
+
+				<p><strong>Method: <small>(for finding and highlighting)</small></strong></p>
+				<ul>
+					<li>
+						Walk the dom tree, find the starting textnode of the bad word.
+					</li>
+					<li>
+						Clone the next child element, which will be of 'element' nodetype.
+					</li>
+					<li>
+						Find the ending textnode of the bad word.
+					</li>
+					<li>
+						Add the formatted nodevalue of the first textnode before the original textnode in the dom, add the 
+						cloned element after the textnode, and remove the original textnode.
+					</li>
+				</ul>
+
+				<p><strong>Source:</strong></p>
+				<ul>
+					<li>
+						<a href="js/jquery.domwalker.js">jquery.domwalker.js</a> (un-compressed and commented)
+					</li>
+				</ul>
+	
+				<p>Works in most browsers</p>
+				<p class="browser-icons">
+					<a class="firefox" title="Firefox" href="http://www.mozilla.com/firefox/">&nbsp;</a>
+					<a class="explorer" title="Internet Explorer" href="http://www.microsoft.com/windows/products/winfamily/ie/">&nbsp;</a>
+					<a class="safari" title="Safari" href="http://www.apple.com/safari/">&nbsp;</a>
+					<a class="opera" title="Opera" href="http://www.opera.com">&nbsp;</a>
+					<a class="chrome" title="Chrome" href="http://www.google.com/chrome">&nbsp;</a>
+				</p>&nbsp;
+
+			</div>
+			<div class="col-l">
+
+				<h2>Proof of concept</h2>
+				<p>
+					It took me a while to refine the logic to get this to work. I tried a bunch of different methods, pulled my hair out and got very grumpy
+					in the process.
+					I'm glad to have got it working. It's not entirely finished. It could do with some refinement and some thorough testing, but concept has been proven!
+				</p>
+					
+				<div id="tabs">
+					<ul>
+						<li><a href="#example">Simple example</a></li>
+						<li><a href="#usage">Usage</a></li>
+					</ul>
+					<div id="example">
+
+						<div id="text">
+							<p>
+								This is some html text. wor<strong>r</strong>d The bad word we will be looking for is 'worrd'. So this is a bad worrd, this
+								i a bad wor<strong>rd</strong> that spans across text and element nodes and this is a bad <strong>worrd</strong> encapsulated
+								with an element node. This is a bad wo<strong>rr<big>d</big></strong> that spans across many element nodes.
+							</p>
+							<p>
+								This is some html text. The bad word we will be looking for is 'worrd'. So this is a bad worrd, this
+								is a bad wor<strong>rd</strong> that spans across text and element nodes and this is a bad <strong>worrd</strong> encapsulated
+								with an element node. This is a bad wo<strong>rr<big>d</big></strong> that spans across many element nodes.
+							</p>
+							<p>
+								This is some html text. The bad word we will be looking for is 'worrd'. So this is a bad worrd, this
+								is a bad wor<strong>rd</strong> that spans across text and element nodes and this is a bad <strong>worrd</strong> encapsulated
+								with an element node. This is a bad wo<strong>rr<big>d</big></strong> that spans across many element nodes.
+							</p>
+							<p>
+								This is some html text. The bad word we will be loo<em>k</em>ing for is 'worrd'. So this is a bad worrd, this
+								is a bad wor<strong>rd</strong> that spans across text and element nodes and this is a bad <strong>worrd</strong> encapsulated
+								with an element node. This is a bad <span>wo<strong>rr<big>d</big></strong></span> that spans across many element nodes.
+							</p>
+						</div>
+
+						<p class="helper-left">
+							search for: <br />
+							<input type="text" value="worrd" id="find-word-val" class="ui-state-active ui-corner-all" />
+							<button id="find-word">Find</button> 
+						</p>
+						<p class="helper-right">
+							replace with:<br />
+							<input type="text" value="word" id="replace-word-val" class="ui-state-active ui-corner-all" />
+							<button id="replace-word">Replace</button>
+						</p>
+
+						<div id="benchmark-results"></div>
+					</div>
+					
+					<div id="usage" class="ui-tabs-hide">
+						<p>
+							You'll need jquery, and the domwalker plugin included in your document.
+						</p>
+						<pre class="prettyprint lang-html">
+&lt;script type=&quot;text/javascript&quot; src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.domwalker.js&quot;&gt;&lt;/script&gt;</pre>
+
+						<pre class="prettyprint lang-javascript">
+var options = {
+	highlight: true,
+	highlightClass: 'highlight'
+};
+
+// get the node that contains the html you are searching
+var containerNode = $("#text").get(0);
+
+// create a new domwalker instance
+var $domWalker = new $.fn.domwalker(containerNode, options);
+
+// find and highlight a word
+$domWalker.find("badword");
+
+// find and replace a word
+$domWalker.find("badword").replace("correctword");</pre>
+
+
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="http://badsyntax.co.uk/js/jquery.ui.js"></script>
+	<script type="text/javascript" src="http://badsyntax.co.uk/js/prettify.js"></script>
+	<script type="text/javascript" src="js/domwalker.js"></script>
+	<script type="text/javascript">
+		//<![CDATA[
+
+		prettyPrint();
+
+		(function($){
+
+			$("#tabs").tabs();
+
+			$("button").button({
+				icons: {
+					primary: 'ui-icon-search'
+				}
+			});
+
+		})(jQuery);
+
+		(function($){
+			
+			var benchmark = {
+
+				time_start : 0, time_diff : 0,
+
+				start : function(){
+					this.time_start = (new Date).getTime();
+				},
+				end : function(){
+					this.time_diff = (new Date).getTime() - this.time_start;
+				},
+				show : function(){
+					document.getElementById("benchmark-results").innerHTML = this.time_diff+" milliseconds";
+				}
+			};
+
+			// create a new walker instance
+			var $domWalker = new domwalker(document.getElementById("text"), { highlight: true });
+
+			document.getElementById("find-word").onclick = function(){
+
+				// start the benchmark
+				benchmark.start();
+
+				var findword = document.getElementById("find-word-val").value;
+
+				// find and highlight the word
+				$domWalker.find(findword);
+
+				// show the benchmark results
+				benchmark.end();
+				benchmark.show();
+			};
+
+			document.getElementById("replace-word").onclick = function(){
+				
+				// start the benchmark
+				benchmark.start();
+				
+				var 
+				findword = document.getElementById("find-word-val").value,
+				replaceword = document.getElementById("replace-word-val").value;
+				
+				// find and replace the word
+				$domWalker
+				.find(findword)
+				.replace(replaceword);
+				
+				// show the benchmark results
+				benchmark.end();
+				benchmark.show();
+			};
+
+		})();
+
+		//]]>
+	</script>
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try {
+			var pageTracker = _gat._getTracker("UA-1636725-14");
+			pageTracker._trackPageview();
+		} catch(err) {}
+	</script>
+	</body>
+</html>
