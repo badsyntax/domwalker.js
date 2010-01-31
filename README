@@ -1,0 +1,5 @@
+This domwalker class was built to find and replace text strings that span across both text and element nodes.
+
+eg: I am a bad w<strong>or</srong>rd
+
+The latest version of the class is not complete, but satisfies most broken word situations.
