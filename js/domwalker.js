@@ -1,14 +1,10 @@
 /*
- *
- * jquery.domwalker.js - find and replace words that span across nodes
- * Copyright (c) 2010 Richard Willis
- * Project	: http://badsyntax.co.uk
- * Contact	: willis.rh@gmail.com
- *
+ * domwalker.js - find and replace words that span across nodes
+ * by Richard Willis 2010
+ * Project: http://github.com/badsyntax/domwalker.js
  */
-(function(){
 
-	var $;
+(function(){
 
 	domwalker = function(node, opt){
 		this.startnode = node;
