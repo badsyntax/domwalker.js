@@ -2,6 +2,7 @@
  * domwalker.js - find and replace words that span across nodes
  * by Richard Willis 2010
  * Project: http://github.com/badsyntax/domwalker.js
+ *
  */
 
 (function(){
